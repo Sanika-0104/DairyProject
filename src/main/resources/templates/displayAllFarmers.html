@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Display All Farmers</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile No</th>
+        <th>Location</th>
+        <th>MilkUnitsPerDay</th>
+        <!-- Add more columns as needed -->
+    </tr>
+    </thead>
+    <tbody>
+
+    <!-- Iterate through the list of farmerUsers -->
+    <tr th:each="user : ${adminUsers}">
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.mobileNo}"></td>
+        <td th:text="${user.location}"></td>
+        <td th:utext="${user.milkUnitsPerDay}"></td>
+        <!-- Add more cells as needed -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Role Based Auth</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+    .navbar {
+        background-color: #61df88;
+    }
+    .anchor {
+        margin: 6px;
+        background-color: #d9edf7;
+        border-color: #d9edf7;
+    }
+    input, label {
+        display: block;
+    }
+</style>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <h1>Role Based Authentication</h1>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4> Hi, Welcome <span th:text ="*{userDetails}"></span> </h4>
+                        </div>
+                        <div class="col-md-3">
+                            <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px">
+                                <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <br><br><br><br><br><br><br>
+    <!-- Create HTML form for updating ratePerLiter -->
+    <div class="container">
+        <h1>Update Rate Per Liter</h1>
+        <form id="updateRateForm" th:action="@{/adminScreen/updateRatePerLiter}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <label for="ratePerLiter">Enter Rate Per Liter:</label>
+            <input type="text" id="ratePerLiter" name="ratePerLiter" required>
+            <button type="submit" class="btn anchor">Update Rate</button>
+        </form>
+    </div>
+
+    <!-- Button to see available farmers -->
+    <div class="container">
+        <br><br>
+        <h2>See Available Farmers</h2>
+        <a th:href="@{/adminScreen/displayAvailableFarmers}" class="btn anchor">
+            <i class="fa fa-arrow-circle-o-right"></i>&nbsp;Available Farmers
+        </a>
+    </div>
+</body>
+</html>
