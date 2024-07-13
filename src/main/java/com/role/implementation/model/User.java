@@ -6,16 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -27,21 +18,44 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
-	
+
 	private String mobileNo;
 	private String location;
-	
+
 	private Double milkUnitsPerDay=0.0;
-	
+
 	private Double ratePerLiter=0.0;
-	
-	
+	private int selectedMilkCollector;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_role", joinColumns = @JoinColumn(name = "cust_id", referencedColumnName = "id"),
 	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id") )
 	Set<Role> roles = new HashSet<Role>();
 
-	
+
+	public void setMilkUnitsPerDay(Double milkUnitsPerDay) {
+		this.milkUnitsPerDay = milkUnitsPerDay;
+	}
+
+	public void setRatePerLiter(Double ratePerLiter) {
+		this.ratePerLiter = ratePerLiter;
+	}
+
+	public int getSelectedMilkCollector() {
+		return selectedMilkCollector;
+	}
+
+	public void setSelectedMilkCollector(int selectedMilkCollector) {
+		this.selectedMilkCollector = selectedMilkCollector;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 
 	public int getId() {
 		return id;
@@ -67,7 +81,7 @@ public class User {
 		this.name = name;
 	}
 
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -115,6 +129,7 @@ public class User {
 	public void setRatePerLiter(double ratePerLiter) {
 		this.ratePerLiter = ratePerLiter;
 	}
-	
+
+
 
 }

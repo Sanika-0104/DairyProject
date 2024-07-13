@@ -9,12 +9,16 @@ import com.role.implementation.model.User;
 
 import java.util.List;
 
+
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer>{
 
 	User findByEmail(String emailId);
-
-	@Query("SELECT u FROM User u " + "JOIN u.roles r " + "WHERE r.id = :roleId")
+	User findByName(String name);
+	@Query("SELECT u FROM User u " +
+			"JOIN u.roles r " +
+			"WHERE r.id = :roleId AND r.role = 'ADMIN'")
 	List<User> findByRole(@Param("roleId") int roleId);
 
+	List<User> findBySelectedMilkCollector(int selectedMilkCollector);
 }

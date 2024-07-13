@@ -1,6 +1,5 @@
 package com.role.implementation.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -11,63 +10,98 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.role.implementation.model.User;
 import com.role.implementation.repository.UserRepository;
-import com.role.implementation.service.DefaultUserService;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/adminScreen")
 public class AdminController {
-
+	
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	private DefaultUserService userService;
+
 
 	@GetMapping
-	public String displayDashboard(Model model) {
-		String user = returnUsername();
-		model.addAttribute("userDetails", user);
+	public String displayDashboard(Model model, RedirectAttributes redirectAttributes) {
+		// Retrieve currently logged-in user details
+		User userDetails = returnUsername();
+		model.addAttribute("userDetails", userDetails);
+
+		// Retrieve flash attributes if available and add to model
+		if (redirectAttributes.containsAttribute("message")) {
+			String message = (String) redirectAttributes.getAttribute("message");
+			model.addAttribute("message", message);
+		}
+		if (redirectAttributes.containsAttribute("selectedMilkCollector")) {
+			User selectedMilkCollector = (User) redirectAttributes.getAttribute("selectedMilkCollector");
+			model.addAttribute("selectedMilkCollector", selectedMilkCollector);
+		}
+
 		return "adminScreen";
 	}
+	@PostMapping("/updateMilkPrice")
+	public String updateMilkProduction(
+			@RequestParam("milkPrice") String milkPrice,
+			@RequestParam("userId") int userId,
+			RedirectAttributes redirectAttributes) {
 
-	private String returnUsername() {
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		UserDetails user = (UserDetails) securityContext.getAuthentication().getPrincipal();
-		User users = userRepository.findByEmail(user.getUsername());
-		return users.getName();
-	}
+		// Log incoming parameters
+		System.out.println("Received Milk Production: " + milkPrice);
+		System.out.println("Received User ID: " + userId);
 
-	@PostMapping("/updateRatePerLiter")
-	public String updateRatePerLiter(@RequestParam("ratePerLiter") double ratePerLiter, Model model) {
-		// Retrieve the currently logged-in user
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userRepository.findByEmail(userDetails.getUsername());
+		// Retrieve user from database based on userId
+		Optional<User> userOptional = userRepository.findById(userId);
 
-		// Update the ratePerLiter field
-		user.setRatePerLiter(ratePerLiter);
+		// Check if user is present
+		if (!userOptional.isPresent()) {
+			// Handle the situation when user is not found
+			System.out.println("User not found with ID: " + userId);
+			return "redirect:/error";
+		}
+
+		User user = userOptional.get();
+
+		// Log user object
+		System.out.println("User Object: " + user);
+
+		try {
+			// Update the milkUnitsPerDay attribute of the User object with the value entered by the user
+			user.setRatePerLiter(Double.parseDouble(milkPrice));
+		} catch (NumberFormatException e) {
+			// Handle the situation when milkProduction cannot be parsed as a double
+			System.out.println("Invalid Milk Production value: " + milkPrice);
+			return "redirect:/error";
+		}
+
+		// Save the updated User object to the database
 		userRepository.save(user);
 
-		// Add a success message to the model
-		model.addAttribute("message", "Rate per liter updated successfully!");
+		// Log success message
+		System.out.println("Milk Price updated successfully for user ID: " + userId);
+
+		// Add success message to redirect attributes
+		redirectAttributes.addFlashAttribute("successMessage", "Milk Price updated successfully!");
+
+		// Redirect to the dashboard
 		return "redirect:/adminScreen";
 	}
-
-	@GetMapping("/displayAvailableFarmers")
-	public String displayAvailableMilkCollectors(Model model) {
-		List<User> adminUsers = userService.getUsersByRole(2);
-		for (User user : adminUsers) {
-			System.out.println("Name: " + user.getName());
-			System.out.println("Email: " + user.getEmail());
-			System.out.println("Mobile No: " + user.getMobileNo());
-			System.out.println("Location: " + user.getLocation());
-			System.out.println("Milk Units Per Day: " + user.getMilkUnitsPerDay());
-			System.out.println("--------------------");
+	private User returnUsername() {
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
+		User user = userRepository.findByEmail(userDetails.getUsername());
+		if (user != null) {
+			return user;
+		} else {
+			return null;
+			// Alternatively, you can throw an exception or handle it based on your application logic.
 		}
-		model.addAttribute("adminUsers", adminUsers);
-		return "displayAllFarmers";
 	}
+	
 }

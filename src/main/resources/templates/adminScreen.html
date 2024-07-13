@@ -15,50 +15,84 @@
         border-color: #d9edf7;
     }
     input, label {
-        display: block;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .custom-box {
+        padding: 20px;
+        height: 400px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 50px;
+    }
+    .custom-box h2, .custom-box label {
+        margin-top: 0;
     }
 </style>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <h1>Role Based Authentication</h1>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h4> Hi, Welcome <span th:text ="*{userDetails}"></span> </h4>
-                        </div>
-                        <div class="col-md-3">
-                            <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px">
-                                <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout
-                            </a>
-                        </div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <h3 style="font-weight: bolder">MILKCOLLECTOR DASHBOARD</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4> Hi, Welcome <span th:text="*{userDetails}"></span> </h4>
+                    </div>
+                    <div class="col-md-3" style="font-weight: bolder; margin-bottom: 10px;">
+                        <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px"> <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout</a>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <br><br><br><br><br><br><br>
-    <!-- Create HTML form for updating ratePerLiter -->
-    <div class="container">
-        <h1>Update Rate Per Liter</h1>
-        <form id="updateRateForm" th:action="@{/adminScreen/updateRatePerLiter}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <label for="ratePerLiter">Enter Rate Per Liter:</label>
-            <input type="text" id="ratePerLiter" name="ratePerLiter" required>
-            <button type="submit" class="btn anchor">Update Rate</button>
-        </form>
     </div>
+</nav>
 
-    <!-- Button to see available farmers -->
-    <div class="container">
-        <br><br>
-        <h2>See Available Farmers</h2>
-        <a th:href="@{/adminScreen/displayAvailableFarmers}" class="btn anchor">
-            <i class="fa fa-arrow-circle-o-right"></i>&nbsp;Available Farmers
-        </a>
+<br><br><br><br><br><br><br>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="row">
+                <!-- Column for Image -->
+                <div class="col-md-6 left-side">
+                    <img src="../static/images/img_6.png"
+                         th:src="@{images/img_6.png}" class="img-responsive" style="width: 100%; height: 100%;" />
+                </div>
+                <!-- Column for Form -->
+                <div class="col-md-6">
+                    <div class="custom-box" >
+                        <form th:action="@{/adminScreen/updateMilkPrice}" method="post" class="form-inline">
+                            <input type="hidden" name="userId" th:value="${userDetails.id}" />
+                            <div class="form-group" style="margin-top: 30px;">
+                                <label for="milkPrice" class="control-label" style="font-size: 22px">Enter Price (Per Liter RS):</label>
+                                <input type="text" id="milkPrice" name="milkPrice" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-anchor" style="margin-top: 30px; margin-left: 300px;">Submit Price</button>
+                            </div>
+                        </form>
+                        <br><br>
+                        <hr>
+                        <div class="clearfix"></div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <label class="control-label" style="font-size: 20px">Find Interested Farmers Here!!</label>
+                            <form th:action="@{/seeFarmers}" method="get" class="form-horizontal">
+                                <input type="hidden" name="collectorId" th:value="${userDetails.id}" />
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <button type="submit" class="btn btn-primary btn-anchor" style="margin-top: 20px; margin-left: 90px;">See Farmers</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- End of custom-box -->
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
 </body>
 </html>
