@@ -64,18 +64,6 @@ Dairy-Connect is a Java Spring Boot application aimed at revolutionizing farmer-
 - RazorPay (for payments)
 - JasperReports (for PDF generation)
 
-## Screenshots
-
-![Screenshot 1](screenshots/ss (1).jpg)
-![Screenshot 2](screenshots/ss (1).jpg)
-![Screenshot 3](screenshots/ss (1).jpg)
-![Screenshot 4](screenshots/ss (1).jpg)
-![Screenshot 5](screenshots/ss (1).jpg)
-![Screenshot 6](screenshots/ss (1).jpg)
-![Screenshot 7](screenshots/ss (1).jpg)
-![Screenshot 8](screenshots/ss (1).jpg)
-![Screenshot 9](screenshots/ss (1).jpg)
-
 ## Getting Started
 
 ### Prerequisites
@@ -105,3 +93,15 @@ Dairy-Connect is a Java Spring Boot application aimed at revolutionizing farmer-
     Contributing
     Contributions are welcome! Please fork the repository and submit a pull request.
 
+
+## Screenshots
+
+![Screenshot 1](screenshots/one.jpg)
+![Screenshot 2](screenshots/two.jpg)
+![Screenshot 3](screenshots/three.jpg)
+![Screenshot 4](screenshots/four.jpg)
+![Screenshot 5](screenshots/five.jpg)
+![Screenshot 6](screenshots/six.jpg)
+![Screenshot 7](screenshots/seven.jpg)
+![Screenshot 8](screenshots/eight.jpg)
+![Screenshot 9](screenshots/nine.jpg)
