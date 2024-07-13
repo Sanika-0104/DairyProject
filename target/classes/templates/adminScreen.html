@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Role Based Auth</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+    .navbar {
+        background-color: #61df88;
+    }
+    .anchor {
+        margin: 6px;
+        background-color: #d9edf7;
+        border-color: #d9edf7;
+    }
+    input, label {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .custom-box {
+        padding: 20px;
+        height: 400px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 50px;
+    }
+    .custom-box h2, .custom-box label {
+        margin-top: 0;
+    }
+</style>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <h3 style="font-weight: bolder">MILKCOLLECTOR DASHBOARD</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4> Hi, Welcome <span th:text="*{userDetails}"></span> </h4>
+                    </div>
+                    <div class="col-md-3" style="font-weight: bolder; margin-bottom: 10px;">
+                        <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px"> <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<br><br><br><br><br><br><br>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="row">
+                <!-- Column for Image -->
+                <div class="col-md-6 left-side">
+                    <img src="../static/images/img_6.png"
+                         th:src="@{images/img_6.png}" class="img-responsive" style="width: 100%; height: 100%;" />
+                </div>
+                <!-- Column for Form -->
+                <div class="col-md-6">
+                    <div class="custom-box" >
+                        <form th:action="@{/adminScreen/updateMilkPrice}" method="post" class="form-inline">
+                            <input type="hidden" name="userId" th:value="${userDetails.id}" />
+                            <div class="form-group" style="margin-top: 30px;">
+                                <label for="milkPrice" class="control-label" style="font-size: 22px">Enter Price (Per Liter RS):</label>
+                                <input type="text" id="milkPrice" name="milkPrice" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-anchor" style="margin-top: 30px; margin-left: 300px;">Submit Price</button>
+                            </div>
+                        </form>
+                        <br><br>
+                        <hr>
+                        <div class="clearfix"></div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <label class="control-label" style="font-size: 20px">Find Interested Farmers Here!!</label>
+                            <form th:action="@{/seeFarmers}" method="get" class="form-horizontal">
+                                <input type="hidden" name="collectorId" th:value="${userDetails.id}" />
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <button type="submit" class="btn btn-primary btn-anchor" style="margin-top: 20px; margin-left: 90px;">See Farmers</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- End of custom-box -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

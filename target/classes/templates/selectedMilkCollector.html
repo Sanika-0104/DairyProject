@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Add your custom CSS styles if needed -->
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>You have selected this milk collector</h1>
+
+            <div th:if="${message != null}">
+                <div class="alert alert-info" th:text="${message}"></div>
+            </div>
+
+            <div th:if="${selectedMilkCollector != null}">
+                <h2 th:text="${selectedMilkCollector.name}">Milk Collector Name</h2>
+                <p><strong>ID:</strong> <span th:text="${selectedMilkCollector.id}">1</span></p>
+                <p><strong>Email:</strong> <span th:text="${selectedMilkCollector.email}">example@example.com</span></p>
+                <p><strong>Phone:</strong> <span th:text="${selectedMilkCollector.phone}">123-456-7890</span></p>
+                <!-- Add more fields as needed -->
+            </div>
+
+            <div th:if="${selectedMilkCollector == null}">
+                <p>No milk collector selected.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

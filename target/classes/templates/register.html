@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Role Based Auth</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #61df88;
+            margin-bottom: 0;
+        }
+        .body-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .left-side {
+            padding: 0;
+            background-size: cover;
+            height: 100%;
+        }
+        .right-side {
+            padding: 40px;
+            overflow: auto;
+        }
+        h1.title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #337ab7;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Body container -->
+<div class="container-fluid body-container">
+    <div class="row" style="width: 100%;">
+        <!-- Left side with image -->
+        <div class="col-md-6 left-side">
+            <img src="../static/images/img_2.png"
+                 th:src="@{images/img_2.png}" class="img-responsive" style="width: 100%; height: 100%;" />
+        </div>
+        <!-- Right side with form -->
+        <div class="col-md-6 right-side">
+            <!-- success message -->
+<!--            <div th:if="${param.success}">-->
+<!--                <div class="alert alert-info">You've successfully registered to our awesome app!</div>-->
+<!--            </div>-->
+
+            <h1 class="title">Registration</h1>
+
+            <form th:action="@{/registration}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label class="control-label" for="firstName">First Name</label>
+                    <input id="firstName" class="form-control" th:field="*{name}" required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="email">Email</label>
+                    <input id="email" class="form-control" th:field="*{email_id}" required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="mobileNo">Mobile No</label>
+                    <input id="mobileNo" class="form-control" th:field="*{mobile_no}" required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="location">Location</label>
+                    <input id="location" class="form-control" th:field="*{location}" required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="password">Password</label>
+                    <input id="password" class="form-control" type="password" th:field="*{password}" required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="role">Role</label>
+                    <select id="role" th:field="*{role}" class="form-control form-control-lg">
+                        <option value="USER">FARMER</option>
+                        <option value="ADMIN">MILK COLLECTOR</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
+                </div>
+                <div class="form-group text-center">
+                    <a th:href="@{/admin_o_login}" class="btn btn-primary">Admin Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

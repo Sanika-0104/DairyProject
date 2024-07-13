@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Display All Milk Collectors</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .table-container {
+            margin: 50px auto;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container table-container">
+    <h2 class="text-center">Milk Collectors</h2>
+    <div th:if="${message}" class="alert alert-warning" th:text="${message}"></div>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Location</th>
+            <th>Select</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate through the list of adminUsers -->
+        <tr th:each="user : ${adminUsers}">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.mobileNo}"></td>
+            <td th:text="${user.location}"></td>
+            <td>
+                <form th:action="@{/selectMilkCollector}" method="post">
+                    <input type="hidden" name="milkCollectorId" th:value="${user.id}" />
+                    <button type="submit" class="btn btn-primary" th:disabled="${selectedMilkCollector != null}">Select</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/removeMilkCollector}" method="post">
+                    <input type="hidden" name="milkCollectorId" th:value="${user.id}" />
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
