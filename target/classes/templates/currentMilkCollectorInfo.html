@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Milk Collector Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .details-container {
+            margin: 50px auto;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .btn-anchor {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container details-container">
+    <h2 class="text-center">Milk Collector Details</h2>
+
+    <!-- Success Message -->
+    <div th:if="${successMessage}" class="alert alert-success"
+         role="alert">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <span th:text="${errorMessage}"></span>
+    </div>
+    <h4 class="text-center">
+        Farmer Name: <span th:text="${farmerName}"></span>
+    </h4>
+
+    <table class="table table-striped table-bordered">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td th:text="${currMilkCollector.name}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${currMilkCollector.email}"></td>
+        </tr>
+        <tr>
+            <th>Mobile No</th>
+            <td th:text="${currMilkCollector.mobileNo}"></td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td th:text="${currMilkCollector.location}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Create Report Form -->
+    <div th:unless="${successMessage}">
+        <h3 class="text-center">Create Report</h3>
+        <form th:action="@{/createReport}" method="post">
+            <input type="hidden" name="id" th:value="${currentFarmer.id}">
+            <input type="hidden" name="currMilkCollectorId" th:value="${currMilkCollector.id}">
+            <input type="hidden" name="name" th:value="${currentFarmer.name}">
+            <input type="hidden" name="milkUnitsPerDay" th:value="${currentFarmer.milkUnitsPerDay}">
+            <input type="hidden" name="ratePerLiter" th:value="${currentFarmer.ratePerLiter}">
+
+            <div class="form-group">
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Report</button>
+        </form>
+    </div>
+
+    <!-- Show Report Button (displayed only if success message is shown) -->
+    <div th:if="${successMessage}" class="text-center">
+        <a th:href="@{/report/pdf}" class="btn btn-info btn-anchor">Show Report</a>
+        <button type="button" class="btn btn-primary btn-anchor" onclick="CreateOrderID()">Pay Now</button>
+    </div>
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var xhttp = new XMLHttpRequest();
+    var RazorpayOrderId;
+
+    function CreateOrderID() {
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                RazorpayOrderId = this.responseText;
+                OpenCheckout();
+            }
+        };
+        xhttp.open("GET", "http://localhost:8080/RZP_Java/OrderCreation", true);
+        xhttp.send();
+    }
+
+    function OpenCheckout() {
+        var options = {
+            "key" : "rzp_test_0EBCNVwrFmCs9Y",
+            "amount" : "10000",
+            "currency" : "INR",
+            "name" : "Acme Corp",
+            "description" : "Test Transaction",
+            "image" : "https://example.com/your_logo",
+            "order_id" : RazorpayOrderId,
+            "callback_url" : "http://localhost:8080/RZP_Java/OrderCreation",
+            "prefill" : {
+                "name" : "Gaurav Kumar",
+                "email" : "gaurav.kumar@example.com",
+                "contact" : "9999999999"
+            },
+            "notes" : {
+                "address" : "Razorpay Corporate Office"
+            },
+            "theme" : {
+                "color" : "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function(response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+
+        rzp1.open();
+    }
+</script>
+
+</body>
+</html>

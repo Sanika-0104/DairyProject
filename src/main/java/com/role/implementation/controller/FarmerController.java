@@ -1,26 +1,16 @@
 package com.role.implementation.controller;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+
+import com.role.implementation.DTO.UserLoginDTO;
+import com.role.implementation.DTO.UserRegisteredDTO;
+import com.role.implementation.model.User;
+import com.role.implementation.service.DefaultUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.role.implementation.model.Role;
-import com.role.implementation.model.User;
-import com.role.implementation.repository.UserRepository;
-import com.role.implementation.service.DefaultUserService;
+import java.util.List;
 
 @Controller
 @RequestMapping("/displayAllMilkCollectors")
@@ -28,17 +18,29 @@ public class FarmerController
 {
     @Autowired
     DefaultUserService userService;
-    
-    @Autowired
-	private UserRepository userRepository;
-
 
 //    @GetMapping
 //    public String display()
 //    {
 //        return "displayAllMilkCollectors";
 //    }
-
+@GetMapping("/currentMilkCollector")
+public String currentSelectedMilkCollectors(Model model,@RequestParam("farmerId") int farmerId,@RequestParam("farmerName") String farmerName) throws Exception {
+    User currentFarmer=userService.findUserById(farmerId);
+    User currentMilkCollector=userService.findUserById(currentFarmer.getSelectedMilkCollector());
+    model.addAttribute("currMilkCollector",currentMilkCollector);
+    model.addAttribute("currentFarmer",currentFarmer);
+    model.addAttribute("farmerId", farmerId);
+    model.addAttribute("farmerName", farmerName);
+    return "currentMilkCollectorInfo";
+}
+    @PostMapping("/selectedMilkCollector")
+    public String displaySelectedMilkCollectors(Model model)
+    {
+//        List<User> adminUsers = userService.getUsersByRole(1);
+//        model.addAttribute("adminUsers", adminUsers);
+        return "selectedMilkCollector";
+    }
     @GetMapping
     public String displayAvailableMilkCollectors(Model model)
     {
@@ -46,5 +48,4 @@ public class FarmerController
         model.addAttribute("adminUsers", adminUsers);
         return "displayAllMilkCollectors";
     }
-    
 }

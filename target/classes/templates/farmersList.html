@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Farmers List</title>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>List of Farmers</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mobile No</th>
+      <th>Location</th>
+      <th>Milk Units Per Day</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="farmer : ${farmers}">
+      <td th:text="${farmer.name}">Name</td>
+      <td th:text="${farmer.email}">Email</td>
+      <td th:text="${farmer.mobileNo}">Mobile No</td>
+      <td th:text="${farmer.location}">Location</td>
+      <td th:text="${farmer.milkUnitsPerDay}">Milk Units Per Day</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
