@@ -25,7 +25,7 @@ Dairy-Connect is a Java Spring Boot application aimed at revolutionizing farmer-
 - Generate daily milk reports
 - Make payments to milk collectors
 
-### Milk Collectors
+### Milk-Collectors
 
 - Register and login
 - Update milk unit rate
