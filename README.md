@@ -93,6 +93,8 @@ Dairy-Connect is a Java Spring Boot application aimed at revolutionizing farmer-
     Contributing
     Contributions are welcome! Please fork the repository and submit a pull request.
 
+## ER Diagram
+<img width="239" height="326" alt="image" src="https://github.com/user-attachments/assets/44d29dc4-c41c-47f0-85e2-7c4cb117d529" />
 
 ## Screenshots
 ![Screenshot 3](screenshots/three.jpg)
